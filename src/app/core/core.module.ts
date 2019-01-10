@@ -7,18 +7,14 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { loadSvgResources } from '../utils/svg.util';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],
   imports: [
     CommonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
+    SharedModule
   ],
   exports: [
     HeaderComponent,
