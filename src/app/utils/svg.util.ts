@@ -3,8 +3,14 @@ import { MatIconRegistry } from '@angular/material';
 
 export const loadSvgResources = (ir: MatIconRegistry, ds: 　DomSanitizer) => {
   const imgDir = 'assets/img';
+  const avatarDir = `${imgDir}/avatar`;
   const sidebarDir = `${imgDir}/sidebar`;
   const dayDir = `${imgDir}/days`;
+
+  ir.addSvgIconSetInNamespace('avatars', ds.bypassSecurityTrustResourceUrl(`${avatarDir}/avatars.svg`));
+  // 添加图标集合用addSvgIconSetInNamespace
+
+  ir.addSvgIcon('unassigned', ds.bypassSecurityTrustResourceUrl(`${avatarDir}/unassigned.svg`));
   ir.addSvgIcon('projects', ds.bypassSecurityTrustResourceUrl(`${sidebarDir}/projects.svg`));
   ir.addSvgIcon('project', ds.bypassSecurityTrustResourceUrl(`${sidebarDir}/project.svg`));
   ir.addSvgIcon('month', ds.bypassSecurityTrustResourceUrl(`${sidebarDir}/month.svg`));
