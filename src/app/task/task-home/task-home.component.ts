@@ -14,7 +14,10 @@ export class TaskHomeComponent implements OnInit {
       tasks: [
         {
           id: 1,
-          desc: '任务一：去星巴克买杯咖啡',
+          desc: '任务一：去星巴克买杯咖啡,去星巴克买杯咖啡',
+          completed: true,
+          priority: 3,
+          reminder: new Date(),
           owner: {
             id: 1,
             name: '张三',
@@ -25,6 +28,8 @@ export class TaskHomeComponent implements OnInit {
         {
           id: 2,
           desc: '任务一：完成老板布置的ppt任务',
+          completed: false,
+          priority: 2,
           owner: {
             id: 1,
             name: '李四',
@@ -41,6 +46,8 @@ export class TaskHomeComponent implements OnInit {
         {
           id: 1,
           desc: '任务一：去星巴克买杯咖啡',
+          completed: false,
+          priority: 1,
           owner: {
             id: 1,
             name: '张三',
@@ -51,6 +58,8 @@ export class TaskHomeComponent implements OnInit {
         {
           id: 2,
           desc: '任务一：完成老板布置的ppt任务',
+          completed: false,
+          priority: 2,
           owner: {
             id: 1,
             name: '李四',
