@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { LoginModule } from './login/login.module';
+import { ProjectModule } from './project/project.module';
 
 
 @NgModule({
@@ -16,11 +17,12 @@ import { LoginModule } from './login/login.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     SharedModule,
     LoginModule,
-    BrowserAnimationsModule
+    ProjectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
