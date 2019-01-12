@@ -5,13 +5,18 @@
     <app-task-header
     [header]="list.name"
     (newTask)="lunchNewTaskDialog()"
-    (moveAllTasks)="lunchCopyTasksDialog()"></app-task-header>
+    (moveAllTasks)="lunchCopyTasksDialog()"
+    (deleteAllTasks)="lunchDeleteTasksDialog()"
+    (updateListName)="lunchUpdateListNameDialog()">
+  </app-task-header>
     <app-task-item
-      *ngFor="let task of list.tasks" [task]="task">
+      *ngFor="let task of list.tasks"
+      [task]="task"
+      (itemClick)="lunchUpdateTaskDialog(task)">
     </app-task-item>
   </app-task-list>
 </div>
 
-<button type="button" mat-fab class="fab-button">
+<button type="button" mat-fab class="fab-button" (click)="addNewTaskList($event)">
   <mat-icon>add</mat-icon>
 </button>

@@ -1,0 +1,12 @@
+<form>
+  <h3 matDialogTitle>{{ title }}</h3>
+  <mat-dialog-content>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="列表名称">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" type="button" (click)="onClick()">保存</button>
+    <button mat-dialog-close mat-raised-button type="button">关闭</button>
+  </mat-dialog-actions>
+</form>

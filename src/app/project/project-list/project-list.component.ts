@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { NewProjectComponent } from '../new-project/new-project.component';
 import { InviteComponent } from '../invite/invite.component';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-project-list',
@@ -32,7 +33,9 @@ export class ProjectListComponent implements OnInit {
 
   openNewProjectDialog() {
     const dialogRef = this.dialog.open(NewProjectComponent, {
-      data: 'this is my data sent.'
+      data: {
+        title: '新建项目：'
+      }
     });
 
     dialogRef.afterClosed().subscribe(
@@ -42,6 +45,27 @@ export class ProjectListComponent implements OnInit {
 
   openInviteDialog() {
     this.dialog.open(InviteComponent);
+  }
+
+  openUpdateDialog() {
+    this.dialog.open(NewProjectComponent, {
+      data: {
+        title: '编辑项目：'
+      }
+    });
+  }
+
+  openDeleteDialog() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: '删除项目：',
+        content: '您确认删除该项目吗？'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(
+      result => 　console.log(result)
+    );
   }
 
 }

@@ -21,9 +21,13 @@ import {
   MatNativeDateModule,
   MatSelectModule,
 } from '@angular/material';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [],
+  entryComponents: [
+    ConfirmDialogComponent
+  ],
+  declarations: [ConfirmDialogComponent],
   imports: [
     CommonModule,
     HttpClientModule,

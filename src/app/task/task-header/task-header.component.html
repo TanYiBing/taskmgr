@@ -16,7 +16,7 @@
 </div>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
+  <button mat-menu-item (click)="onChangeListName($event)">
     <mat-icon>mode_edit</mat-icon>
     <span> 修改列表名称 </span>
   </button>
@@ -26,7 +26,7 @@
     <span> 移动本列表所有任务 </span>
   </button>
   <mat-divider></mat-divider>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="onDeleteAllTasks($event)">
     <mat-icon>delete_forever</mat-icon>
     <span> 删除列表 </span>
   </button>

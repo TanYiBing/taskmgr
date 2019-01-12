@@ -9,6 +9,8 @@ export class ProjectItemComponent implements OnInit {
 
   @Input() item;
   @Output() launchInviteDailog = new EventEmitter<void>();
+  @Output() launchUpdateDailog = new EventEmitter<void>();
+  @Output() launchDeleteDailog = new EventEmitter<void>();
 
   constructor() { }
 
@@ -17,5 +19,13 @@ export class ProjectItemComponent implements OnInit {
 
   openInviteDialog(ev: Event): void {
     this.launchInviteDailog.emit();
+  }
+
+  openUpdateDialog(ev: Event): void {
+    this.launchUpdateDailog.emit();
+  }
+
+  openDeleteDialog(ev: Event): void {
+    this.launchDeleteDailog.emit();
   }
 }

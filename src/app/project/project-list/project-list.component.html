@@ -2,8 +2,9 @@
   *ngFor="let project of projects"
   [item]="project"
   class="card"
-  (launchInviteDailog)="openInviteDialog()">
-
+  (launchInviteDailog)="openInviteDialog()"
+  (launchUpdateDailog)="openUpdateDialog()"
+  (launchDeleteDailog)="openDeleteDialog()">
 </app-project-item>
 
 <button type="button" mat-fab class="fab-button" (click)="openNewProjectDialog()">
