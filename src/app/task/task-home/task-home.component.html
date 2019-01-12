@@ -2,7 +2,10 @@
   <app-task-list
     *ngFor="let list of lists"
     class="list-container">
-    <app-task-header [header]="list.name" (newTask)="lunchNewTaskDialog()"></app-task-header>
+    <app-task-header
+    [header]="list.name"
+    (newTask)="lunchNewTaskDialog()"
+    (moveAllTasks)="lunchCopyTasksDialog()"></app-task-header>
     <app-task-item
       *ngFor="let task of list.tasks" [task]="task">
     </app-task-item>
