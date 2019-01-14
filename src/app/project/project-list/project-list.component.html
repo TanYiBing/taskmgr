@@ -1,13 +1,13 @@
-<app-project-item
-  *ngFor="let project of projects"
-  [item]="project"
-  class="card"
-  (launchInviteDailog)="openInviteDialog()"
-  (launchUpdateDailog)="openUpdateDialog()"
-  (launchDeleteDailog)="openDeleteDialog()">
-</app-project-item>
+<div class="container" [@list]="projects.length">
+  <app-project-item
+    *ngFor="let project of projects"
+    [item]="project" class="card"
+    (launchInviteDailog)="openInviteDialog()"
+    (launchUpdateDailog)="openUpdateDialog()"
+    (launchDeleteDailog)="openDeleteDialog(project)">
+  </app-project-item>
+</div>
 
 <button type="button" mat-fab class="fab-button" (click)="openNewProjectDialog()">
   <mat-icon>add</mat-icon>
 </button>
-

@@ -1,6 +1,6 @@
 <mat-sidenav-container [ngClass]="{'myapp-dark-theme': dark}">
   <mat-sidenav #sidenav>
-    <app-sidebar>
+    <app-sidebar (navClick)="sidenav.close()">
 
     </app-sidebar>
   </mat-sidenav>

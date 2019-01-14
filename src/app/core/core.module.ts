@@ -11,17 +11,22 @@ import { loadSvgResources } from '../utils/svg.util';
 import { SharedModule } from '../shared/shared.module';
 
 import 'hammerjs';
+import { AppRoutingModule } from '../app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    AppRoutingModule
   ]
 })
 export class CoreModule {

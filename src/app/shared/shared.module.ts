@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '../../../node_modules/@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import {
   MatSidenavModule,
   MatToolbarModule,
