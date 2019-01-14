@@ -3,7 +3,8 @@
     'priority-normal': task.priority===3,
     'priority-important': task.priority===2,
     'priority-emergency': task.priority===1}"
-  (click)="itemClicked($event)">
+  (click)="itemClicked($event)"
+  [@item]="widerPriority">
   <mat-checkbox
     [checked]="task.completed"
     class="status"
