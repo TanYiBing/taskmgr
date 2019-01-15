@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { NewTaskComponent } from '../new-task/new-task.component';
 import { CopyTaskComponent } from '../copy-task/copy-task.component';
@@ -10,7 +10,8 @@ import { slideToRight } from '../../anims/router.anim';
   selector: 'app-task-home',
   templateUrl: './task-home.component.html',
   styleUrls: ['./task-home.component.scss'],
-  animations: [slideToRight]
+  animations: [slideToRight],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskHomeComponent implements OnInit {
 
@@ -81,7 +82,8 @@ export class TaskHomeComponent implements OnInit {
   ];
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -93,6 +95,7 @@ export class TaskHomeComponent implements OnInit {
         title: '新建任务：'
       }
     });
+    this.cd.markForCheck();
   }
 
   lunchCopyTasksDialog() {
@@ -101,6 +104,7 @@ export class TaskHomeComponent implements OnInit {
         lists: this.lists
       }
     });
+    this.cd.markForCheck();
   }
 
   lunchUpdateTaskDialog(task) {
@@ -110,6 +114,7 @@ export class TaskHomeComponent implements OnInit {
         task: task
       }
     });
+    this.cd.markForCheck();
   }
 
   lunchDeleteTasksDialog() {
@@ -123,6 +128,7 @@ export class TaskHomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => console.log(result)
     );
+    this.cd.markForCheck();
   }
 
   lunchUpdateListNameDialog() {
@@ -131,6 +137,7 @@ export class TaskHomeComponent implements OnInit {
         title: '修改列表名称：'
       }
     });
+    this.cd.markForCheck();
   }
 
   addNewTaskList() {
@@ -139,6 +146,7 @@ export class TaskHomeComponent implements OnInit {
         title: '新建任务列表：'
       }
     });
+    this.cd.markForCheck();
   }
 
 
