@@ -20,7 +20,7 @@ export class TaskHomeComponent implements OnInit {
   lists = [
     {
       id: 1,
-      name:　'代办',
+      name: 　'代办',
       tasks: [
         {
           id: 1,
@@ -51,7 +51,7 @@ export class TaskHomeComponent implements OnInit {
     },
     {
       id: 1,
-      name: 　'进行中',
+      name: '进行中',
       tasks: [
         {
           id: 1,
@@ -149,5 +149,19 @@ export class TaskHomeComponent implements OnInit {
     this.cd.markForCheck();
   }
 
+  handleMove(data, list) {
+    switch (data.tag) {
+      case 'task-item': {
+        console.log('task-item');
+        break;
+      }
+      case 'task-list': {
+        console.log('task-list');
+        break;
+      }
+      default:
+        break;
+    }
+  }
 
 }

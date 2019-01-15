@@ -44,15 +44,11 @@ mat-icon.avatar {
   text-decoration: line-through;
 }
 
-
-
 .content {
   order: 1;
   width: 100%;
   padding: 5px;
 }
-
-
 
 .priority-normal {
   border-left: 3px solid #a6a6a6;
@@ -64,4 +60,9 @@ mat-icon.avatar {
 
 .priority-emergency {
   border-left: 3px solid red;
+}
+
+.drag-start {
+  opacity: 0.3;
+  border: #ff525b dashed 2px;
 }

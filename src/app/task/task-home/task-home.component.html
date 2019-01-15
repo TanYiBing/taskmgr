@@ -1,14 +1,22 @@
 <div class="task-lists">
   <app-task-list
     *ngFor="let list of lists"
-    class="list-container">
+    class="list-container"
+    [appDraggable]="true"
+    [draggedClass]="'drag-start'"
+    [dragTag]="'task-list'"
+    [dragData]="list"
+    appDroppable
+    [dragEnterClass]="'drag-enter'"
+    [dropTags]="['task-item', 'task-list']"
+    (dropped)="handleMove($event, list)">
     <app-task-header
-    [header]="list.name"
-    (newTask)="lunchNewTaskDialog()"
-    (moveAllTasks)="lunchCopyTasksDialog()"
-    (deleteAllTasks)="lunchDeleteTasksDialog()"
-    (updateListName)="lunchUpdateListNameDialog()">
-  </app-task-header>
+      [header]="list.name"
+      (newTask)="lunchNewTaskDialog()"
+      (moveAllTasks)="lunchCopyTasksDialog()"
+      (deleteAllTasks)="lunchDeleteTasksDialog()"
+      (updateListName)="lunchUpdateListNameDialog()">
+    </app-task-header>
     <app-task-item
       *ngFor="let task of list.tasks"
       [task]="task"
