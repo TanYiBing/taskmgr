@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm, $event)">
   <mat-card>
     <mat-card-header>
       <mat-card-title>
@@ -7,12 +7,14 @@
     </mat-card-header>
     <mat-card-content>
       <mat-form-field class="full-width">
-        <input matInput placeholder="您的email" type="text" required>
+        <input matInput placeholder="您的email" type="email" formControlName="email">
+        <mat-error>再检查下用户名哦！</mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <input matInput placeholder="您的密码" type="password" required>
+        <input matInput placeholder="您的密码" type="password" formControlName="password">
+        <mat-error>密码一定要填哦！</mat-error>
       </mat-form-field>
-      <button mat-raised-button color="accent">登陆</button>
+      <button mat-raised-button color="accent" type="submit">登陆</button>
     </mat-card-content>
     <mat-card-actions class="text-right">
       <p>还没有账户？
