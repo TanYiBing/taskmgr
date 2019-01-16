@@ -24,12 +24,16 @@ import {
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DirectiveModule } from '../directive/directive.module';
 import { ReactiveFormsModule, FormsModule } from '../../../node_modules/@angular/forms';
+import { ImgListSelectComponent } from './img-list-select/img-list-select.component';
 
 @NgModule({
   entryComponents: [
     ConfirmDialogComponent
   ],
-  declarations: [ConfirmDialogComponent],
+  declarations: [
+    ConfirmDialogComponent,
+    ImgListSelectComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -77,7 +81,8 @@ import { ReactiveFormsModule, FormsModule } from '../../../node_modules/@angular
     MatSelectModule,
     DirectiveModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ImgListSelectComponent
   ]
 })
 export class SharedModule { }
