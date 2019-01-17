@@ -13,14 +13,18 @@ import { SharedModule } from '../shared/shared.module';
 import 'hammerjs';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServicesModule } from '../services/services.module';
+import { HttpClientModule } from '../../../node_modules/@angular/common/http';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],
   imports: [
+    BrowserAnimationsModule,
+    HttpClientModule,
     CommonModule,
     SharedModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
+    ServicesModule.forRoot(),
   ],
   exports: [
     HeaderComponent,
@@ -29,7 +33,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule
   ],
   providers: [
-    {provide: 'BASE_CONFIG', useValue: 'http://localhost:4200'}
+    {
+      provide: 'BASE_CONFIG', useValue: {
+        uri:　'http://localhost:3000'
+      }
+    }
   ]
 })
 export class CoreModule {
