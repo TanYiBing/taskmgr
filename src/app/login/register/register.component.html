@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" (ngSubmit)="onSubmit(form, $event)">
   <mat-card>
     <mat-card-header>
       <mat-card-title>
@@ -26,6 +26,7 @@
         [items]="items"
         formControlName="avatar">
       </app-img-list-select>
+       <app-age-input formControlName="dateOfBirth"></app-age-input>
       <button mat-raised-button color="accent" type="submit">注册</button>
     </mat-card-content>
     <mat-card-actions class="text-right">
