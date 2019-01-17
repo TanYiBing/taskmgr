@@ -27,6 +27,13 @@ export interface Age {
       useExisting: forwardRef(() => AgeInputComponent),
       // 允许多对一，一个令牌有多个对应的内容
       multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      // 自身还没创建，所以要用forwardRef()
+      useExisting: forwardRef(() => AgeInputComponent),
+      // 允许多对一，一个令牌有多个对应的内容
+      multi: true
     }
   ]
 })
