@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
       password: ['', Validators.required],
       repeat: ['', Validators.required],
       avatar: [img],
-      dateOfBirth:　[]
+      dateOfBirth:  ['1995-07-27']
     });
   }
 

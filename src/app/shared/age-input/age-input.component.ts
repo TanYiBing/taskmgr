@@ -1,8 +1,8 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormBuilder, NG_VALIDATORS, FormControl } from '@angular/forms';
-import { map, combineLatest, filter, startWith, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { merge } from 'rxjs';
-import { parse, subDays, isBefore, differenceInDays, differenceInMonths, subMonths, differenceInYears, subYears } from 'date-fns';
+import { map, filter, startWith, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { merge, combineLatest, Subscription } from 'rxjs';
+import { parse, subDays, isBefore, differenceInDays, differenceInMonths, subMonths, differenceInYears, subYears, format } from 'date-fns';
 import { convertToDate, isValidDate } from '../../utils/date.util';
 
 export enum AgeUnit {
@@ -27,22 +27,21 @@ export interface Age {
       useExisting: forwardRef(() => AgeInputComponent),
       // 允许多对一，一个令牌有多个对应的内容
       multi: true
-    },
-    {
-      provide: NG_VALIDATORS,
-      // 自身还没创建，所以要用forwardRef()
-      useExisting: forwardRef(() => AgeInputComponent),
-      // 允许多对一，一个令牌有多个对应的内容
-      multi: true
     }
   ]
 })
-export class AgeInputComponent implements OnInit, ControlValueAccessor {
+export class AgeInputComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
-  daysTop = 90;
-  monthsTop = 24;
-
+  @Input() daysTop = 90;
+  @Input() daysBottom = 0;
+  @Input() monthsTop = 24;
+  @Input() monthsBottom = 1;
+  @Input() yearsBottom = 1;
+  @Input() yearsTop = 150;
+  @Input() debounceTime = 300;
+  selectedUnit = AgeUnit.Year;
   ageForm: FormGroup;
+  private subBirth: Subscription;
 
   ageUnits = [
     { value: AgeUnit.Year, label: '岁' },
@@ -61,7 +60,7 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor {
       birthday: ['', this.validateDate],
       age: this.fb.group({
         ageNum: [],
-        ageUnit: []
+        ageUnit: [AgeUnit.Year]
       }, { validator: this.validateAge('ageNum', 'ageUnit') })
     });
     // 首先从formGroup中get各个控件
@@ -75,39 +74,38 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor {
     // 得到最终的merged$，只要观察它就行了
     const birthday$ = birthday.valueChanges.pipe(
       map(d => ({ date: d, from: 'birthday' })),
-      debounceTime(300),
+      debounceTime(this.debounceTime),
       distinctUntilChanged(),
       filter(_ => birthday.valid)
     );
 
     const ageNum$ = ageNum.valueChanges.pipe(
       startWith(ageNum.value),
-      debounceTime(300),
+      debounceTime(this.debounceTime),
       distinctUntilChanged()
     );
 
     const ageUnit$ = ageUnit.valueChanges.pipe(
       startWith(ageUnit.value),
-      debounceTime(300),
+      debounceTime(this.debounceTime),
       distinctUntilChanged()
     );
 
-    const age$ = combineLatest(ageNum$, ageUnit$, (_n: number, _u: AgeUnit) => {
-      this.toDate({ age: _n, unit: _u }).pipe(
-        map(d => ({ date: d, from: 'age' })),
-        filter(_ => age.valid)
-      );
-    });
+    const age$ = combineLatest(ageNum$, ageUnit$, (_n: number, _u: AgeUnit) => this.toDate({ age: _n, unit: _u })).pipe(
+      map(d => ({ date: d, from: 'age' })),
+      filter(_ => age.valid)
+    );
 
     const merged$ = merge(birthday$, age$).pipe(filter(_ => this.ageForm.valid));
 
-    merged$.subscribe((d: { date, from: string }) => {
+    this.subBirth = merged$.subscribe((d: { date, from: string }) => {
       const aged = this.toAge(d.date);
       if (d.from === 'birthday') {
         if (aged.age !== ageNum.value) {
           ageNum.patchValue(aged.age, { emitEvent: false });
         }
         if (aged.unit !== ageUnit.value) {
+          this.selectedUnit = aged.unit;
           ageUnit.patchValue(aged.unit, { emitEvent: false });
         }
         this.propagateChange(d.date);
@@ -121,7 +119,21 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.subBirth) {
+      this.subBirth.unsubscribe();
+    }
+  }
+
+  // 例如外界想要设置初始值
   writeValue(obj: any): void {
+    if (obj) {
+      const date = convertToDate(obj);
+      this.ageForm.get('birthday').patchValue(date);
+      const age = this.toAge(date);
+      this.ageForm.get('age').get('ageNum').patchValue(age.age);
+      this.ageForm.get('age').get('ageUnit').patchValue(age.unit);
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -179,7 +191,48 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor {
   }
 
   validateAge(ageNumKey: string, ageUnitKey: string) {
+    return (group: FormGroup): { [key: string]: any } => {
+      const ageNum = group.controls[ageNumKey];
+      const ageUnit = group.controls[ageUnitKey];
 
+      const ageNumVal = ageNum.value;
+      let result = false;
+
+      switch (ageUnit.value) {
+        case AgeUnit.Year: {
+          result = ageNumVal >= this.yearsBottom && ageNumVal <= this.yearsTop;
+          break;
+        }
+        case AgeUnit.Month: {
+          result =
+            ageNumVal >= this.monthsBottom && ageNumVal <= this.monthsTop;
+          break;
+        }
+        case AgeUnit.Day: {
+          result = ageNumVal >= this.daysBottom && ageNumVal <= this.daysTop;
+          break;
+        }
+        default: {
+          result = false;
+          break;
+        }
+      }
+      return result ? null : { ageInvalid: true };
+    };
+  }
+
+  // 验证表单，验证结果正确返回 null 否则返回一个验证结果对象
+  validate(c: FormControl): { [key: string]: any } | null {
+    const val = c.value;
+    if (!val) {
+      return null;
+    }
+    if (isValidDate(val)) {
+      return null;
+    }
+    return {
+      ageInvalid: true
+    };
   }
 
 }
