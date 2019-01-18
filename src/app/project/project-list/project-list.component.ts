@@ -82,7 +82,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       map(val => ({ ...val, id: project.id, coverImg: this.buildImgSrc(val.coverImg) })),
       switchMap(v => this.projectService.update(v))
     ).subscribe(p => {
-        const index = this.projects.map(p => p.id).indexOf(p.id);
+      const index = this.projects.map(prj => prj.id).indexOf(p.id);
         this.projects = [...this.projects.slice(0, index), p, ...this.projects.slice(index + 1)];
         this.cd.markForCheck();
       });
@@ -99,7 +99,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().pipe(
       take(1),
       filter(n => n),
-      switchMap(_ => this.projectService.del(project))
+      // tslint:disable-next-line:no-shadowed-variable
+      switchMap( _ => this.projectService.del(project))
     ).subscribe(prj => {
       this.projects = this.projects.filter(p => p.id !== prj.id);
       this.cd.markForCheck();
