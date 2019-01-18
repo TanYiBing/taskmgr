@@ -14,7 +14,7 @@ import 'hammerjs';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServicesModule } from '../services/services.module';
-import { HttpClientModule } from '../../../node_modules/@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],

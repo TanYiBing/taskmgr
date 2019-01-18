@@ -24,7 +24,7 @@ import {
 } from '@angular/material';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DirectiveModule } from '../directive/directive.module';
-import { ReactiveFormsModule, FormsModule } from '../../../node_modules/@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ImgListSelectComponent } from './img-list-select/img-list-select.component';
 import { AgeInputComponent } from './age-input/age-input.component';
 

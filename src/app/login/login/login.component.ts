@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '../../../../node_modules/@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuoteService } from '../../services/quote.service';
 import { Quote } from '../../domain/quote.model';
 
