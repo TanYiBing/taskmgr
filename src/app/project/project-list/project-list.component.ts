@@ -5,6 +5,8 @@ import { InviteComponent } from '../invite/invite.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { slideToRight } from '../../anims/router.anim';
 import { listAnim } from '../../anims/list.anim';
+import { Project } from '../../domain';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-project-list',
@@ -17,26 +19,15 @@ export class ProjectListComponent implements OnInit {
 
   @HostBinding('@routeAnim') state;
 
-  projects = [
-    {
-      'id': 1,
-      'name': '问题跟踪系统',
-      'desc': '用于 Bug 的内部跟踪和管理',
-      'coverImg': '/assets/img/covers/1.jpg',
-    },
-    {
-      'id': 2,
-      'name': '某某公司 ERP 系统',
-      'desc': '为某某公司开发的定制化 ERP 系统',
-      'coverImg': '/assets/img/covers/20.jpg',
-    }
-  ];
+  projects: Project[];
 
   constructor(
     private dialog: MatDialog,
+    private projectService: ProjectService
   ) { }
 
   ngOnInit() {
+    this.projectService.get('37489e0c-df34-c261-71c4-ce75357e3035').subscribe(projects => this.projects = projects);
   }
 
   openNewProjectDialog() {
@@ -47,21 +38,7 @@ export class ProjectListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(
-      result => {
-        console.log(result);
-        this.projects = [...this.projects, {
-          'id': 3,
-          'name': '测试list动画',
-          'desc': '测试list动画',
-          'coverImg': '/assets/img/covers/10.jpg',
-        },
-          {
-            'id': 4,
-            'name': '测试list动画2',
-            'desc': '测试list动画2',
-            'coverImg': '/assets/img/covers/9.jpg',
-          }];
-      }
+
     );
 
 
