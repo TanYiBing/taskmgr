@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Project } from '../domain';
+import { Task, TaskList } from '../domain';
 import { Observable, from } from 'rxjs';
-import { mergeMap, count, switchMap, map, mapTo } from 'rxjs/operators';
+import { mergeMap, count, switchMap, map, mapTo, reduce } from 'rxjs/operators';
 
 @Injectable()
 export class TaskService {
@@ -16,41 +16,63 @@ export class TaskService {
   ) { }
 
   // POST /tasks
-  add(project: Project): Observable<Project> {
+  add(task: Task): Observable<Task> {
     const uri = `${this.config.uri}/${this.domain}`;
-    project.id = null;
-    return this.http.post<Project>(uri, JSON.stringify(project), {headers: this.headers});
+    task.id = null;
+    return this.http.post<Task>(uri, JSON.stringify(task), {headers: this.headers});
   }
 
   // PATCH /tasks/:id
-  update(project: Project): Observable<Project> {
-    const uri = `${this.config.uri}/${this.domain}/${project.id}`;
+  update(task: Task): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${task.id}`;
     const toUpdate = {
-      name: project.name,
-      coverImg: project.coverImg,
-      desc: project.desc
+      desc: task.desc,
+      ownerId: task.ownerId,
+      dueDate: task.dueDate,
+      reminder: task.reminder,
+      priority: task.priority,
+      participantIds: task.participantIds,
+      remark: task.remark
     };
-    return this.http.patch<Project>(uri, JSON.stringify(toUpdate), { headers: this.headers });
+    return this.http.patch<Task>(uri, JSON.stringify(toUpdate), { headers: this.headers });
   }
 
   // DELETE /tasks/:id
-  del(project: Project): Observable<Project> {
-    const uri = `${this.config.uri}/${this.domain}/${project.id}`;
-    const delTask$ = from(project.taskLists).pipe(
-      mergeMap(listId => this.http.delete(`${this.config.uri}/taskLists/${listId}`)),
-      count()
-    );
-    return delTask$.pipe(
-      switchMap(_ => this.http.delete(uri).pipe(
-        mapTo(project))
-      )
+  del(task: Task): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${task.id}`;
+    return this.http.delete(uri).pipe(
+      mapTo(task)
     );
   }
 
   // GET /tasks
-  get(userId: string): Observable<Project[]> {
+  get(taskListId: string): Observable<Task[]> {
     const uri = `${this.config.uri}/${this.domain}`;
-    return this.http.get<Project[]>(uri, {params: {'members_like': userId}});
+    return this.http.get<Task[]>(uri, { params: { 'taskListId': taskListId}});
   }
 
+  getByLists(lists: TaskList[]): Observable<Task[]> {
+    return from(lists).pipe(
+      mergeMap(list => this.get(list.id)),
+      reduce((arr, taskArr) => [...arr, ...taskArr], [])
+    );
+  }
+
+  complete(task: Task): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${task.id}`;
+    return this.http.patch<Task>(uri, JSON.stringify({ completed: !task.completed }), { headers: this.headers });
+  }
+
+  move(taskId: string, taskListId: string): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${taskId}`;
+    return this.http.patch<Task>(uri, JSON.stringify({ taskListId: taskListId }), { headers: this.headers });
+  }
+
+  moveAll(srcListId: string, targetListId: string): Observable<Task[]> {
+    return this.get(srcListId).pipe(
+      mergeMap(tasks => from(tasks)),
+      mergeMap(task => this.move(task.id, targetListId)),
+      reduce((taskArr: Task[], task: Task) => [...taskArr, task], [])
+    );
+  }
 }
