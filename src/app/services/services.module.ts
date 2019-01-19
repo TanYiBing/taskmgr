@@ -6,6 +6,7 @@ import { TaskListService } from './task-list.service';
 import { TaskService } from './task.service';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
+import { AuthGuardService } from './antu-guard.service';
 
 @NgModule()
 export class ServicesModule {
@@ -19,7 +20,8 @@ export class ServicesModule {
         TaskListService,
         TaskService,
         UserService,
-        AuthService
+        AuthService,
+        AuthGuardService
       ]
     };
   }

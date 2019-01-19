@@ -27,6 +27,7 @@ import { DirectiveModule } from '../directive/directive.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ImgListSelectComponent } from './img-list-select/img-list-select.component';
 import { AgeInputComponent } from './age-input/age-input.component';
+import { ChipsListComponent } from './chips-list/chips-list.component';
 
 @NgModule({
   entryComponents: [
@@ -35,7 +36,8 @@ import { AgeInputComponent } from './age-input/age-input.component';
   declarations: [
     ConfirmDialogComponent,
     ImgListSelectComponent,
-    AgeInputComponent
+    AgeInputComponent,
+    ChipsListComponent
   ],
   imports: [
     CommonModule,
