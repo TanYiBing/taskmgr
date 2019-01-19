@@ -1,3 +1,16 @@
-<p>
-  chips-list works!
-</p>
+<div [formGroup]="form" class="full-width">
+  <p>{{label}}</p>
+  <mat-chip-list>
+    <mat-chip selected color="primary" *ngFor="let member of items">
+      {{member.name}} <mat-icon matChipRemove (click)="removeMember(member)">cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+  <mat-form-field *ngIf="displayInput" class="full-width">
+    <input matInput [placeholder]="placeholderText" [matAutocomplete]="autoMember" formControlName="memberSearch">
+  </mat-form-field>
+</div>
+<mat-autocomplete #autoMember="matAutocomplete" [displayWith]="displayUser">
+  <mat-option *ngFor="let item of memberResults$ | async" [value]="item" (onSelectionChange)="handleMemberSelection(item)">
+    {{ item.name }}
+  </mat-option>
+</mat-autocomplete>

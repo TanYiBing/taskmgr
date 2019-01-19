@@ -21,6 +21,7 @@ import {
   MatNativeDateModule,
   MatSelectModule,
   MatButtonToggleModule,
+  MatChipsModule,
 } from '@angular/material';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DirectiveModule } from '../directive/directive.module';
@@ -61,6 +62,7 @@ import { ChipsListComponent } from './chips-list/chips-list.component';
     MatNativeDateModule,
     MatSelectModule,
     MatButtonToggleModule,
+    MatChipsModule,
     DirectiveModule,
     ReactiveFormsModule,
     FormsModule
@@ -86,11 +88,13 @@ import { ChipsListComponent } from './chips-list/chips-list.component';
     MatNativeDateModule,
     MatSelectModule,
     MatButtonToggleModule,
+    MatChipsModule,
     DirectiveModule,
     ReactiveFormsModule,
     FormsModule,
     ImgListSelectComponent,
-    AgeInputComponent
+    AgeInputComponent,
+    ChipsListComponent
   ]
 })
 export class SharedModule { }

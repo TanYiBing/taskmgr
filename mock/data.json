@@ -49,6 +49,20 @@
       "roleIds": [
         1
       ]
+    },
+    {
+      "password": "Lm123456",
+      "name": "李明",
+      "avatar": "avatars:svg-5",
+      "email": "liming@163.com",
+      "id": "BkkDasee-",
+      "projectIds": [
+        "Sk2HaTagb",
+        "Hya1moGb-"
+      ],
+      "roleIds": [
+        1
+      ]
     }
   ],
   "projects": [
