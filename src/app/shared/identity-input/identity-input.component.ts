@@ -2,7 +2,6 @@ import { Component, OnInit, forwardRef, OnDestroy, ChangeDetectionStrategy } fro
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormControl } from '@angular/forms';
 import { IdentityType, Identity } from '../../domain';
 import { Subject, Observable, Subscription, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-identity-input',
