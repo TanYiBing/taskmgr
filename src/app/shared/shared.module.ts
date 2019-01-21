@@ -29,6 +29,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ImgListSelectComponent } from './img-list-select/img-list-select.component';
 import { AgeInputComponent } from './age-input/age-input.component';
 import { ChipsListComponent } from './chips-list/chips-list.component';
+import { IdentityInputComponent } from './identity-input/identity-input.component';
+import { AreaListComponent } from './area-list/area-list.component';
 
 @NgModule({
   entryComponents: [
@@ -38,7 +40,9 @@ import { ChipsListComponent } from './chips-list/chips-list.component';
     ConfirmDialogComponent,
     ImgListSelectComponent,
     AgeInputComponent,
-    ChipsListComponent
+    ChipsListComponent,
+    IdentityInputComponent,
+    AreaListComponent
   ],
   imports: [
     CommonModule,
@@ -94,7 +98,9 @@ import { ChipsListComponent } from './chips-list/chips-list.component';
     FormsModule,
     ImgListSelectComponent,
     AgeInputComponent,
-    ChipsListComponent
+    ChipsListComponent,
+    IdentityInputComponent,
+    AreaListComponent
   ]
 })
 export class SharedModule { }

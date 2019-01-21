@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR, ControlValueAccessor, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { User } from '../../domain';
 import { Observable } from 'rxjs';
@@ -24,7 +24,8 @@ import { UserService } from '../../services/user.service';
       // 允许多对一，一个令牌有多个对应的内容
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChipsListComponent implements OnInit, ControlValueAccessor {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormBuilder, NG_VALIDATORS, FormControl } from '@angular/forms';
 import { map, filter, startWith, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { merge, combineLatest, Subscription } from 'rxjs';
@@ -35,7 +35,8 @@ export interface Age {
       // 允许多对一，一个令牌有多个对应的内容
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AgeInputComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
