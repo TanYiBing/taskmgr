@@ -27,7 +27,7 @@ import { Subject, Observable, Subscription, combineLatest } from 'rxjs';
 })
 export class IdentityInputComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
-  identityTypes: [
+  identityTypes = [
     {value: IdentityType.IdCard, label: '身份证'},
     { value: IdentityType.Insurance, label: '医保' },
     { value: IdentityType.Military, label: '军官证' },

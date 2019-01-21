@@ -1,8 +1,9 @@
 import { Component, OnInit, forwardRef, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, FormControl } from '../../../../node_modules/@angular/forms';
 import { Address } from '../../domain';
-import { Subject, Subscription, combineLatest, Observable } from 'rxjs';
+import { Subject, Subscription, combineLatest, Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { getProvinces, getCitiesByProvince, getAreasByCity } from '../../utils/area.util';
 
 @Component({
   selector: 'app-area-list',
@@ -29,14 +30,14 @@ import { startWith, map } from 'rxjs/operators';
 export class AreaListComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
   _address: Address = {
-    province: null,
-    city: null,
-    district: null,
-    street: null
+    province: '',
+    city: '',
+    district: '',
+    street: ''
   };
   cities$: Observable<string[]>;
   districts$: Observable<string[]>;
-  provinces = getProvinces();
+  provinces$: Observable<string[]>;
   private _province = new Subject<string>();
   private _city = new Subject<string>();
   private _district = new Subject<string>();
@@ -61,6 +62,8 @@ export class AreaListComponent implements OnInit, ControlValueAccessor, OnDestro
     });
     this._sub = val$.subscribe(val => this.propagateChange(val));
 
+
+    this.provinces$ = of(getProvinces());
     // 根据省份的选择得到城市列表
     this.cities$ = province$.pipe(
       map(province => getCitiesByProvince(province))
@@ -81,6 +84,18 @@ export class AreaListComponent implements OnInit, ControlValueAccessor, OnDestro
   public writeValue(obj: Address): void {
     if (obj) {
       this._address = obj;
+      if (this._address.province) {
+        this._province.next(this._address.province);
+      }
+      if (this._address.city) {
+        this._city.next(this._address.city);
+      }
+      if (this._address.district) {
+        this._district.next(this._address.district);
+      }
+      if (this._address.street) {
+        this._street.next(this._address.street);
+      }
     }
   }
 
@@ -112,18 +127,22 @@ export class AreaListComponent implements OnInit, ControlValueAccessor, OnDestro
 
   onProvinceChange() {
     this._province.next(this._address.province);
+    console.log(this._address.province);
   }
 
   onCityChange() {
     this._city.next(this._address.city);
+    console.log(this._address.city);
   }
 
   onDistrictChange() {
     this._district.next(this._address.district);
+    console.log(this._address.district);
   }
 
   onStreetChange() {
     this._street.next(this._address.street);
+    console.log(this._address.street);
   }
 
 }

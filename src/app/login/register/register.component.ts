@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { debounceTime, filter } from 'rxjs/operators';
+import { isValidDate } from '../../utils/date.util';
+import { isValidAddr, extractInfo, getAddrByCode } from '../../utils/identity.util';
+import { Subscription } from '../../../../node_modules/rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent implements OnInit {
-  private items:　string[];
+export class RegisterComponent implements OnInit, OnDestroy {
+
+  form: FormGroup;
+  private items: 　string[];
   private readonly avatarName = 'avatars';
-  form;
+  private _sub: Subscription;
+
   constructor(
     private fb: FormBuilder
   ) { }
@@ -25,11 +33,38 @@ export class RegisterComponent implements OnInit {
       password: ['', Validators.required],
       repeat: ['', Validators.required],
       avatar: [img],
-      dateOfBirth:  ['1995-07-27']
+      identity: [],
+      dateOfBirth: ['1995-07-27'],
+      address: []
+    });
+
+    const identity$ = this.form.get('identity').valueChanges.pipe(
+      debounceTime(300),
+      filter(_ => this.form.get('identity').valid)
+    );
+
+    this._sub = identity$.subscribe(identity => {
+      const info = extractInfo(identity.identityNo);
+      if (isValidAddr(info.addrCode)) {
+        const addr = getAddrByCode(info.addrCode);
+        this.form.patchValue({ address: addr });
+        this.form.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+      }
+      if (isValidDate(info.dateOfBirth)) {
+        const date = info.dateOfBirth;
+        this.form.patchValue({ dateOfBirth: date });
+        this.form.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+      }
     });
   }
 
-  onSubmit({value, valid}, ev: Event) {
+  ngOnDestroy(): void {
+    if (this._sub) {
+      this._sub.unsubscribe();
+    }
+  }
+
+  onSubmit({ value, valid }, ev: Event) {
     ev.preventDefault();
     if (!valid) {
       return;

@@ -22,6 +22,7 @@ import {
   MatSelectModule,
   MatButtonToggleModule,
   MatChipsModule,
+  MatTabsModule,
 } from '@angular/material';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DirectiveModule } from '../directive/directive.module';
@@ -67,6 +68,7 @@ import { AreaListComponent } from './area-list/area-list.component';
     MatSelectModule,
     MatButtonToggleModule,
     MatChipsModule,
+    MatTabsModule,
     DirectiveModule,
     ReactiveFormsModule,
     FormsModule
@@ -93,6 +95,7 @@ import { AreaListComponent } from './area-list/area-list.component';
     MatSelectModule,
     MatButtonToggleModule,
     MatChipsModule,
+    MatTabsModule,
     DirectiveModule,
     ReactiveFormsModule,
     FormsModule,
