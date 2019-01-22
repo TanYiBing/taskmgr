@@ -16,7 +16,7 @@ export const reducers: ActionReducerMap<State> = {
   quote: fromQuote.reducer,
 };
 
-export const getQuoteState = createFeatureSelector('quote');
+export const getQuoteState = createFeatureSelector<Quote>('quote');
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
