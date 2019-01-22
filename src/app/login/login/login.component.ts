@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuoteService } from '../../services/quote.service';
 import { Quote } from '../../domain/quote.model';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import * as actions from '../../actions/quote.action';
 
 @Component({
   selector: 'app-login',
@@ -11,17 +15,15 @@ import { Quote } from '../../domain/quote.model';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  quote: Quote = {
-    cn: '满足感在于不断的努力，而不是现有成就。全心努力定会胜利满满。',
-    en: 'Satisfaction lies in the effort, not in the attainment. Full efforts is full victory.',
-    pic: 'assets/img/quotes/0.jpg'
-  };
+  quote$: Observable<Quote>;
 
   constructor(
     private fb: FormBuilder,
-    private quoteService$: QuoteService
+    private quoteService$: QuoteService,
+    private store$: Store<fromRoot.State>,
   ) {
-    this.quoteService$.getQuote().subscribe(q => this.quote = q );
+    this.quote$ = this.store$.select(state => state.quote.quote);
+    this.quoteService$.getQuote().subscribe(q => this.store$.dispatch(new actions.QuoteSuccessAction(q)) );
   }
 
   ngOnInit() {

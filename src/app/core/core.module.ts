@@ -15,6 +15,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServicesModule } from '../services/services.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AppStoreModule } from '../reducers';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],
@@ -25,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     AppRoutingModule,
     ServicesModule.forRoot(),
+    AppStoreModule
   ],
   exports: [
     HeaderComponent,
