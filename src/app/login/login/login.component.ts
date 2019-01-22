@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     private quoteService$: QuoteService,
     private store$: Store<fromRoot.State>,
   ) {
-    this.quote$ = this.store$.select(state => state.quote.quote);
+    this.quote$ = this.store$.select(state => state.quote);
     this.quoteService$.getQuote().subscribe(q => this.store$.dispatch(new actions.QuoteSuccessAction(q)) );
   }
 

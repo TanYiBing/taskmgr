@@ -6,20 +6,17 @@ import { environment } from '../../environments/environment';
 import { storeFreeze } from 'ngrx-store-freeze';
 
 import * as fromQuote from './quote.reducer';
+import { Quote } from '../domain';
 
 export interface State {
-  quote: fromQuote.State;
+  quote: Quote;
 }
-
-export const initialState: State = {
-  quote: fromQuote.initialState
-};
 
 export const reducers: ActionReducerMap<State> = {
   quote: fromQuote.reducer,
 };
 
-export const getQuoteState = createFeatureSelector();
+export const getQuoteState = createFeatureSelector('quote');
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
