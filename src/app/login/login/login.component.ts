@@ -4,7 +4,8 @@ import { Quote } from '../../domain/quote.model';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
-import * as actions from '../../actions/quote.action';
+import * as quoteActions from '../../actions/quote.action';
+import * as authActions from '../../actions/auth.action';
 
 @Component({
   selector: 'app-login',
@@ -25,13 +26,18 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: ['wang@163.com', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.required]
+      email: ['wpcfan@163.com', Validators.compose([Validators.required, Validators.email])],
+      password: ['wp123456', Validators.required]
     });
 
-    this.store$.dispatch(new actions.QuoteAction(null));
+    this.store$.dispatch(new quoteActions.QuoteAction(null));
   }
 
   onSubmit({value, valid}, ev: Event) {
+    ev.preventDefault();
+    if (!valid) {
+      return;
+    }
+    this.store$.dispatch(new authActions.LoginAction(value));
   }
 }

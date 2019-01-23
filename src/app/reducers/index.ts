@@ -6,17 +6,26 @@ import { environment } from '../../environments/environment';
 import { storeFreeze } from 'ngrx-store-freeze';
 
 import * as fromQuote from './quote.reducer';
-import { Quote } from '../domain';
+import * as fromAuth from './auth.reducer';
+import * as fromRouter from '@ngrx/router-store';
+
+import { Quote, Auth } from '../domain';
+import { RouterStateUrl } from '../utils/router.util';
 
 export interface State {
   quote: Quote;
+  auth: Auth;
+  router: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
 export const reducers: ActionReducerMap<State> = {
   quote: fromQuote.reducer,
+  auth: fromAuth.reducer,
+  router: fromRouter.routerReducer
 };
 
 export const getQuoteState = createFeatureSelector<Quote>('quote');
+export const getAuthState = createFeatureSelector<Auth>('auth');
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({

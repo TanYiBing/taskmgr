@@ -24,7 +24,6 @@ export class AuthService {
  * @param user 用户信息，id 属性会被忽略，因为服务器端会创建新的 id
  */
   register(user: User): Observable<Auth> {
-    user.id = null;
     const uri = `${this.config.uri}/users`;
     return this.http.get(uri, { params: {'email': user.email} }).pipe(
       switchMap(res => {

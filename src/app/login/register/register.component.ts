@@ -3,7 +3,10 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { debounceTime, filter } from 'rxjs/operators';
 import { isValidDate } from '../../utils/date.util';
 import { isValidAddr, extractInfo, getAddrByCode } from '../../utils/identity.util';
-import { Subscription } from '../../../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import * as authActions from '../../actions/auth.action';
 
 @Component({
   selector: 'app-register',
@@ -19,8 +22,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private _sub: Subscription;
 
   constructor(
-    private fb: FormBuilder
-  ) { }
+    private fb: FormBuilder,
+    private store$: Store<fromRoot.State>,
+  ) {}
 
   ngOnInit() {
     const img = `${this.avatarName}:svg-${(Math.random() * 16).toFixed()}`;
@@ -69,7 +73,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (!valid) {
       return;
     }
-    console.log(value);
+    this.store$.dispatch(new authActions.RegisterAction(value));
   }
 
 }

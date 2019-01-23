@@ -10,7 +10,7 @@ export const initialState: Quote = {
 export function reducer(state: Quote = initialState, action: quoteActions.QuoteActions): Quote {
   switch (action.type) {
     case quoteActions.QuoteActionTypes.QUOTE_SUCCESS: {
-      return { ...action.payload };
+      return { ...<Quote>action.payload };
     }
     case quoteActions.QuoteActionTypes.QUOTE_FAIL: {
       return state;
