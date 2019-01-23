@@ -28,7 +28,7 @@
   </div>
   <div class="street">
     <mat-form-field class="full-width">
-      <input matInput placeholder="街道地址" [(ngModel)]="_address.street" (ngModelChange)="onStreetChange()" />
+      <input matInput placeholder="街道地址" [(ngModel)]="_address.street" (change)="onStreetChange()" />
     </mat-form-field>
   </div>
 </div>

@@ -28,13 +28,13 @@ import { Subject, Observable, Subscription, combineLatest } from 'rxjs';
 export class IdentityInputComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
   identityTypes = [
-    {value: IdentityType.IdCard, label: '身份证'},
+    { value: IdentityType.IdCard, label: '身份证'},
     { value: IdentityType.Insurance, label: '医保' },
     { value: IdentityType.Military, label: '军官证' },
     { value: IdentityType.Passport, label: '护照' },
     { value: IdentityType.Other, label: '其它' }
   ];
-  identity: Identity = {identityType: null, identityNo: null};
+  identity: Identity = { identityType: null, identityNo: null};
 
   private _idType = new Subject<IdentityType>();
   private _idNo = new Subject<string>();
