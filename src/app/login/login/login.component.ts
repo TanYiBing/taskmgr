@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { QuoteService } from '../../services/quote.service';
 import { Quote } from '../../domain/quote.model';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -19,11 +18,9 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private quoteService$: QuoteService,
     private store$: Store<fromRoot.State>,
   ) {
     this.quote$ = this.store$.select(fromRoot.getQuoteState);
-    this.quoteService$.getQuote().subscribe(q => this.store$.dispatch(new actions.QuoteSuccessAction(q)) );
   }
 
   ngOnInit() {
@@ -31,6 +28,8 @@ export class LoginComponent implements OnInit {
       email: ['wang@163.com', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
     });
+
+    this.store$.dispatch(new actions.QuoteAction(null));
   }
 
   onSubmit({value, valid}, ev: Event) {

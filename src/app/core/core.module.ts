@@ -1,5 +1,4 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 
@@ -16,17 +15,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServicesModule } from '../services/services.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppStoreModule } from '../reducers';
+import { AppEffectsModule } from '../effects';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],
   imports: [
-    BrowserAnimationsModule,
     HttpClientModule,
-    CommonModule,
     SharedModule,
     AppRoutingModule,
     ServicesModule.forRoot(),
-    AppStoreModule
+    AppStoreModule,
+    AppEffectsModule,
+    BrowserAnimationsModule,
   ],
   exports: [
     HeaderComponent,
