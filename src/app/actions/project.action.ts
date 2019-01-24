@@ -88,8 +88,6 @@ export class UpdateFailAction implements Action {
 
 export class LoadAction implements Action {
   readonly type = ProjectActionTypes.LOAD;
-
-  constructor(public payload: null) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -105,20 +103,20 @@ export class LoadFailAction implements Action {
   constructor(public payload: string) { }
 }
 
-export class InveteAction implements Action {
-  readonly type = ProjectActionTypes.LOAD;
+export class InviteAction implements Action {
+  readonly type = ProjectActionTypes.INVITE;
 
-  constructor(public payload: {projectId: string, members: User[]}) { }
+  constructor(public payload: { projectId: string, members: User[] }) { }
 }
 
-export class InveteSuccessAction implements Action {
-  readonly type = ProjectActionTypes.LOAD_SUCCESS;
+export class InviteSuccessAction implements Action {
+  readonly type = ProjectActionTypes.INVITE_SUCCESS;
 
   constructor(public payload: Project) { }
 }
 
-export class InveteFailAction implements Action {
-  readonly type = ProjectActionTypes.LOAD_FAIL;
+export class InviteFailAction implements Action {
+  readonly type = ProjectActionTypes.INVITE_FAIL;
 
   // 错误时传递一个错误信息，所以是string
   constructor(public payload: string) { }
@@ -147,8 +145,8 @@ export type ProjectActions = AddAction
   | LoadAction
   | LoadSuccessAction
   | LoadFailAction
-  | InveteAction
-  | InveteSuccessAction
-  | InveteFailAction
+  | InviteAction
+  | InviteSuccessAction
+  | InviteFailAction
   | SelectAction;
 

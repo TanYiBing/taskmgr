@@ -31,7 +31,7 @@ export class ProjectEffects {
   @Effect()
   addProject$: Observable<Action> = this.actions$.pipe(
     ofType(actions.ProjectActionTypes.ADD),
-    map(action => action.payload),
+    map((action: actions.AddAction) => action.payload),
     withLatestFrom(this.store$.pipe(select(fromRoot.getAuthState))),
     switchMap(([project, auth]) => {
       const added = { ...project, members: [`${auth.user.id}`] };
@@ -46,7 +46,7 @@ export class ProjectEffects {
 
   @Effect()
   updateProject$: Observable<Action> = this.actions$.pipe(
-    ofType<actions.UpdateProjectAction>(actions.ProjectActionTypes.UPDATE),
+    ofType<actions.UpdateAction>(actions.ProjectActionTypes.UPDATE),
     map(action => action.payload),
     switchMap(project =>
       this.service.update(project).pipe(
@@ -79,92 +79,92 @@ export class ProjectEffects {
     map(project => new routerActions.Go({ path: [`/tasklists/${project.id}`] }))
   );
 
-  @Effect()
-  toLoadUsersByPrj$: Observable<Action> = this.actions$.pipe(
-    ofType<actions.SelectAction>(actions.ProjectActionTypes.SELECT_PROJECT),
-    map(action => action.payload),
-    map(project => new userActions.LoadUsersByPrjAction(<string>project.id))
-  );
+  // @Effect()
+  // toLoadUsersByPrj$: Observable<Action> = this.actions$.pipe(
+  //   ofType<actions.SelectAction>(actions.ProjectActionTypes.SELECT_PROJECT),
+  //   map(action => action.payload),
+  //   map(project => new userActions.LoadUsersByPrjAction(<string>project.id))
+  // );
+
+  // @Effect()
+  // startInitTaskLists$: Observable<Action> = this.actions$.pipe(
+  //   ofType<actions.AddProjectSuccessAction>(actions.ProjectActionTypes.ADD_SUCCESS),
+  //   map(action => action.payload),
+  //   map(project => new tasklistActions.InitTaskListsAction(project))
+  // );
+
+
+
+  // @Effect()
+  // addUserPrjRef$: Observable<Action> = this.actions$.pipe(
+  //   ofType<actions.AddProjectSuccessAction>(actions.ProjectActionTypes.ADD_SUCCESS),
+  //   map(action => action.payload),
+  //   map((prj: Project) => prj.id),
+  //   withLatestFrom(
+  //     this.store$.pipe(
+  //       select(fromRoot.getAuth),
+  //       map(auth => auth.user)
+  //     ),
+  //     (projectId: string, user: User) => {
+  //       return new userActions.AddUserProjectAction({
+  //         user: user,
+  //         projectId: projectId
+  //       });
+  //     }
+  //   )
+  // );
+
+  // @Effect()
+  // delUserPrjRef$: Observable<Action> = this.actions$.pipe(
+  //   ofType<actions.DeleteProjectSuccessAction>(actions.ProjectActionTypes.DELETE_SUCCESS),
+  //   map(action => action.payload),
+  //   map((prj: Project) => prj.id),
+  //   withLatestFrom(
+  //     this.store$.pipe(
+  //       select(fromRoot.getAuth),
+  //       map(auth => auth.user)
+  //     ),
+  //     (projectId: string, user: User) => {
+  //       return new userActions.RemoveUserProjectAction({
+  //         user: user,
+  //         projectId: projectId
+  //       });
+  //     }
+  //   )
+  // );
 
   @Effect()
-  startInitTaskLists$: Observable<Action> = this.actions$.pipe(
-    ofType<actions.AddProjectSuccessAction>(actions.ProjectActionTypes.ADD_SUCCESS),
-    map(action => action.payload),
-    map(project => new tasklistActions.InitTaskListsAction(project))
-  );
-
-
-
-  @Effect()
-  addUserPrjRef$: Observable<Action> = this.actions$.pipe(
-    ofType<actions.AddProjectSuccessAction>(actions.ProjectActionTypes.ADD_SUCCESS),
-    map(action => action.payload),
-    map((prj: Project) => prj.id),
-    withLatestFrom(
-      this.store$.pipe(
-        select(fromRoot.getAuth),
-        map(auth => auth.user)
-      ),
-      (projectId: string, user: User) => {
-        return new userActions.AddUserProjectAction({
-          user: user,
-          projectId: projectId
-        });
-      }
-    )
-  );
-
-  @Effect()
-  delUserPrjRef$: Observable<Action> = this.actions$.pipe(
-    ofType<actions.DeleteProjectSuccessAction>(actions.ProjectActionTypes.DELETE_SUCCESS),
-    map(action => action.payload),
-    map((prj: Project) => prj.id),
-    withLatestFrom(
-      this.store$.pipe(
-        select(fromRoot.getAuth),
-        map(auth => auth.user)
-      ),
-      (projectId: string, user: User) => {
-        return new userActions.RemoveUserProjectAction({
-          user: user,
-          projectId: projectId
-        });
-      }
-    )
-  );
-
-  @Effect()
-  inviteMembersRef$: Observable<Action> = this.actions$.pipe(
-    ofType<actions.InviteMembersAction>(actions.ProjectActionTypes.INVITE),
+  invite$: Observable<Action> = this.actions$.pipe(
+    ofType<actions.InviteAction>(actions.ProjectActionTypes.INVITE),
     map(action => action.payload),
     switchMap(({ projectId, members }) =>
       this.service.inviteMembers(projectId, members).pipe(
         map(
-          (project: Project) => new actions.InviteMembersSuccessAction(project)
+          (project: Project) => new actions.InviteSuccessAction(project)
         ),
-        catchError(err => of(new actions.InviteMembersFailAction(err)))
+        catchError(err => of(new actions.InviteFailAction(err)))
       )
     )
   );
 
-  @Effect()
-  updateUserPrjRef$: Observable<Action> = this.actions$.pipe(
-    ofType<actions.InviteMembersSuccessAction>(actions.ProjectActionTypes.INVITE_SUCCESS),
-    map(action => action.payload),
-    map(
-      (project: Project) =>
-        new userActions.BatchUpdateUserProjectAction(project)
-    )
-  );
+  // @Effect()
+  // updateUserPrjRef$: Observable<Action> = this.actions$.pipe(
+  //   ofType<actions.InviteSuccessAction>(actions.ProjectActionTypes.INVITE_SUCCESS),
+  //   map(action => action.payload),
+  //   map(
+  //     (project: Project) =>
+  //       new userActions.BatchUpdateUserProjectAction(project)
+  //   )
+  // );
 
-  @Effect({ dispatch: false })
-  navigate$ = this.actions$.pipe(
-    ofType(routerActions.GO),
-    map((action: routerActions.Go) => action.payload),
-    tap(({ path, query: queryParams, extras }) =>
-      this.router.navigate(path, { queryParams, ...extras })
-    )
-  );
+  // @Effect({ dispatch: false })
+  // navigate$ = this.actions$.pipe(
+  //   ofType(routerActions.GO),
+  //   map((action: routerActions.Go) => action.payload),
+  //   tap(({ path, query: queryParams, extras }) =>
+  //     this.router.navigate(path, { queryParams, ...extras })
+  //   )
+  // );
 
   /**
    *

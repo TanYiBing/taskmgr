@@ -1,8 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Project } from '../domain';
+import { Project, User } from '../domain';
 import { Observable, from } from 'rxjs';
 import { mergeMap, count, switchMap, map, mapTo } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 @Injectable()
 export class ProjectService {
@@ -41,7 +42,7 @@ export class ProjectService {
       count()
     );
     return delTask$.pipe(
-      switchMap(_ => this.http.delete(uri).pipe(
+      switchMap(() => this.http.delete(uri).pipe(
         mapTo(project))
       )
     );
@@ -51,6 +52,18 @@ export class ProjectService {
   get(userId: string): Observable<Project[]> {
     const uri = `${this.config.uri}/${this.domain}`;
     return this.http.get<Project[]>(uri, {params: {'members_like': userId}});
+  }
+
+  inviteMembers(projectId: string, members: User[]) {
+    const uri = `${this.config.uri}/${this.domain}/${projectId}`;
+    return this.http.get<Project>(uri).pipe(
+      switchMap((project: Project) => {
+        const existingMemberIds = project.members;
+        const invitedIds = members.map(user => user.id);
+        const newIds = _.union(existingMemberIds, invitedIds);
+        return this.http.patch(uri, JSON.stringify({members: newIds}), {headers: this.headers});
+      })
+    );
   }
 
 }

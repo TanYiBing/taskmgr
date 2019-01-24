@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { StoreModule, ActionReducerMap, MetaReducer, createFeatureSelector } from '@ngrx/store';
+import { StoreModule, ActionReducerMap, MetaReducer, createFeatureSelector, createSelector } from '@ngrx/store';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
@@ -29,7 +29,19 @@ export const reducers: ActionReducerMap<State> = {
 
 export const getQuoteState = createFeatureSelector<Quote>('quote');
 export const getAuthState = createFeatureSelector<Auth>('auth');
-export const getProjectsState = createFeatureSelector<fromProject.State>('projects');
+export const getProjectsState = createFeatureSelector<fromProject.State>('project');
+
+export const {
+  selectIds: getProjectIds,
+  selectEntities: getProjectEntities,
+  selectAll: getProjects,
+  selectTotal: getProjectTotal
+} = fromProject.adapter.getSelectors(getProjectsState);
+
+
+export const getAuth = createSelector(getAuthState, getUserEntities, (_auth, _entities) => {
+  return { ..._auth, user: _entities[<string>_auth.userId] };
+});
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
