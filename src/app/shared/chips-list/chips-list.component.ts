@@ -2,7 +2,7 @@ import { Component, OnInit, forwardRef, Input, ChangeDetectionStrategy } from '@
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR, ControlValueAccessor, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { User } from '../../domain';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, switchMap } from '../../../../node_modules/rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
 
 @Component({

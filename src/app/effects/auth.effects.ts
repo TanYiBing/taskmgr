@@ -7,7 +7,7 @@ import * as routerActions from '../actions/router.action';
 import { switchMap, map, catchError, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { User } from '../domain';
-import { Router } from '../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
