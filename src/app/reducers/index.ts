@@ -9,6 +9,7 @@ import * as fromQuote from './quote.reducer';
 import * as fromAuth from './auth.reducer';
 import * as fromProject from './project.reducer';
 import * as fromRouter from '@ngrx/router-store';
+import * as fromTaskLists from './task-list.reducer';
 
 import { Quote, Auth } from '../domain';
 import { RouterStateUrl } from '../utils/router.util';
@@ -18,18 +19,21 @@ export interface State {
   auth: Auth;
   router: fromRouter.RouterReducerState<RouterStateUrl>;
   project: fromProject.State;
+  taskLists: fromTaskLists.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
   quote: fromQuote.reducer,
   auth: fromAuth.reducer,
   router: fromRouter.routerReducer,
-  project: fromProject.reducer
+  project: fromProject.reducer,
+  taskLists: fromTaskLists.reducer,
 };
 
 export const getQuoteState = createFeatureSelector<Quote>('quote');
 export const getAuthState = createFeatureSelector<Auth>('auth');
 export const getProjectsState = createFeatureSelector<fromProject.State>('project');
+export const getTaskListsState = createFeatureSelector<fromTaskLists.State>('taskLists');
 
 export const {
   selectIds: getProjectIds,
@@ -39,9 +43,9 @@ export const {
 } = fromProject.adapter.getSelectors(getProjectsState);
 
 
-export const getAuth = createSelector(getAuthState, getUserEntities, (_auth, _entities) => {
-  return { ..._auth, user: _entities[<string>_auth.userId] };
-});
+// export const getAuth = createSelector(getAuthState, getUserEntities, (_auth, _entities) => {
+//   return { ..._auth, user: _entities[<string>_auth.userId] };
+// });
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({

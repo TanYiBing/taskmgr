@@ -4,7 +4,7 @@ import { Action, Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
-import { withLatestFrom, switchMap, map, catchError, tap } from 'rxjs/operators';
+import { switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
 import { ProjectService } from '../services/project.service';
 import { Project, User } from '../domain';
 import * as routerActions from '../actions/router.action';
@@ -19,7 +19,7 @@ export class ProjectEffects {
     ofType(actions.ProjectActionTypes.LOAD),
     withLatestFrom(this.store$.pipe(select(fromRoot.getAuthState))),
     switchMap(([_, auth]) =>
-      this.service.get(<string>auth.userId).pipe(
+      this.service.get(auth.userId).pipe(
         map(projects => new actions.LoadSuccessAction(projects)),
         catchError(err =>
           of(new actions.LoadFailAction(JSON.stringify(err)))

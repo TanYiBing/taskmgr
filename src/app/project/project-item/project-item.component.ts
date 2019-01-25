@@ -14,6 +14,7 @@ export class ProjectItemComponent implements OnInit {
   @Output() launchInviteDailog = new EventEmitter<void>();
   @Output() launchUpdateDailog = new EventEmitter<void>();
   @Output() launchDeleteDailog = new EventEmitter<void>();
+  @Output() itemSelected = new EventEmitter<void>();
   @HostBinding('@card') cardState = 'out';
 
   constructor() { }
@@ -30,14 +31,25 @@ export class ProjectItemComponent implements OnInit {
   }
 
   openInviteDialog(ev: Event): void {
+    ev.preventDefault();
+    ev.stopPropagation();
     this.launchInviteDailog.emit();
   }
 
   openUpdateDialog(ev: Event): void {
+    ev.preventDefault();
+    ev.stopPropagation();
     this.launchUpdateDailog.emit();
   }
 
   openDeleteDialog(ev: Event): void {
+    ev.preventDefault();
+    ev.stopPropagation();
     this.launchDeleteDailog.emit();
+  }
+
+  onClick(ev: Event) {
+    ev.preventDefault();
+    this.itemSelected.emit();
   }
 }

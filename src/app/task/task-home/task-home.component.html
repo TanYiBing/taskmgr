@@ -1,6 +1,6 @@
 <div class="task-lists">
   <app-task-list
-    *ngFor="let list of lists"
+    *ngFor="let list of (lists$ | async)"
     class="list-container"
     [appDraggable]="true"
     [draggedClass]="'drag-start'"
@@ -15,8 +15,8 @@
       [header]="list.name"
       (newTask)="lunchNewTaskDialog()"
       (moveAllTasks)="lunchCopyTasksDialog()"
-      (deleteAllTasks)="lunchDeleteTasksDialog()"
-      (updateListName)="lunchUpdateListNameDialog()">
+      (deleteAllTasks)="lunchDeleteTasksDialog(list)"
+      (updateListName)="lunchUpdateListNameDialog(list)">
     </app-task-header>
     <app-quick-task (quickTask)="handleQuickTask($event)"></app-quick-task>
     <app-task-item

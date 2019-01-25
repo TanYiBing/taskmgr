@@ -5,6 +5,12 @@ import { CopyTaskComponent } from '../copy-task/copy-task.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component';
 import { slideToRight } from '../../anims/router.anim';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from '../../../../node_modules/rxjs/operators';
+import { TaskList } from '../../domain';
 
 @Component({
   selector: 'app-task-home',
@@ -17,76 +23,18 @@ export class TaskHomeComponent implements OnInit {
 
   @HostBinding('@routeAnim') state;
 
-  lists = [
-    {
-      id: 1,
-      name: 　'待办',
-      order: 1,
-      tasks: [
-        {
-          id: 1,
-          desc: '任务一：去星巴克买杯咖啡,去星巴克买杯咖啡',
-          completed: true,
-          priority: 3,
-          reminder: new Date(),
-          owner: {
-            id: 1,
-            name: '张三',
-            avatar: 'avatars:svg-11'
-          },
-          dueDate: new Date(),
-        },
-        {
-          id: 2,
-          desc: '任务一：完成老板布置的ppt任务',
-          completed: false,
-          priority: 2,
-          owner: {
-            id: 1,
-            name: '李四',
-            avatar: 'avatars:svg-11'
-          },
-          dueDate: new Date(),
-        },
-      ]
-    },
-    {
-      id: 1,
-      name: '进行中',
-      order: 2,
-      tasks: [
-        {
-          id: 1,
-          desc: '任务一：去星巴克买杯咖啡',
-          completed: false,
-          priority: 1,
-          owner: {
-            id: 1,
-            name: '张三',
-            avatar: 'avatars:svg-11'
-          },
-          dueDate: new Date(),
-        },
-        {
-          id: 2,
-          desc: '任务一：完成老板布置的ppt任务',
-          completed: false,
-          priority: 2,
-          owner: {
-            id: 1,
-            name: '李四',
-            avatar: 'avatars:svg-11'
-          },
-          dueDate: new Date(),
-        },
-      ]
-    }
-  ];
+  lists$: Observable<TaskList[]>;
+  private projectId$: Observable<string>;
 
   constructor(
     private dialog: MatDialog,
-    private cd: ChangeDetectorRef
-  ) { }
+    private cd: ChangeDetectorRef,
+    private store$: Store<fromRoot.State>,
+    private route: ActivatedRoute
+  ) {
+    this.projectId$ = this.route.paramMap.pipe(map(p => <string>p.get('id')));
+    this.lists$ = this.store$.select(fromRoot.getTaskListsState);
+  }
 
   ngOnInit() {
   }

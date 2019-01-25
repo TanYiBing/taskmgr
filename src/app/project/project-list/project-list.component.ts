@@ -108,4 +108,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     return img.indexOf('_') > -1 ? img.split('_')[0] + '.jpg' : img;
   }
 
+  selectProject(project: Project) {
+    this.store$.dispatch(new projectActions.SelectAction(project));
+  }
+
 }

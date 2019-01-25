@@ -2,6 +2,7 @@
   <app-project-item
     *ngFor="let project of (projects$ | async)"
     [item]="project" class="card"
+    (itemSelected)="selectProject(project)"
     (launchInviteDailog)="openInviteDialog(project)"
     (launchUpdateDailog)="openUpdateDialog(project)"
     (launchDeleteDailog)="openDeleteDialog(project)">
